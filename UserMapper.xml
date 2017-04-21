@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ning.nsfw.dao.UserDao">
+    <resultMap id="UserResult" type="User">
+        <id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+        <result property="name" column="name"/>
+        <result property="dept" column="dept"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+        <result property="headImg" column="headImg"/>
+        <result property="gender" column="gender"/>
+        <result property="email" column="email"/>
+        <result property="mobile" column="mobile"/>
+        <result property="birthday" column="birthday" javaType="java.util.Date" jdbcType="DATE"/>
+        <result property="state" column="state"/>
+        <result property="memo" column="memo"/>
+    </resultMap>
+    <select id="showUsers" resultMap="UserResult">
+        SELECT * FROM USER
+    </select>
+    <select id="findUserById" parameterType="String" resultMap="UserResult">
+        SELECT * FROM USER WHERE id= #{id}
+    </select>
+    <update id="editUser" parameterType="com.ning.nsfw.entity.User">
+      UPDATE USER SET name=#{name},dept=#{dept},account=#{account},password=#{password},
+      headImg=#{headImg},gender=#{gender},email=#{email},mobile=#{mobile},birthday=#{birthday},
+      state=#{state},memo=#{memo} WHERE id=#{id}
+    </update>
+    <insert id="insertUser" parameterType="com.ning.nsfw.entity.User">
+        INSERT INTO USER(id,name,dept,account,password,headImg,gender,email,mobile,birthday,state,memo) VALUES (#{id},#{name},#{dept},#{account},#{password},#{headImg},#{gender},#{email},#{mobile},#{birthday},#{state},#{memo})
+    </insert>
+    <delete id="deleteById" parameterType="String">
+        DELETE FROM USER WHERE id= #{id}
+    </delete>
+    <select id="showUsersByLimit" parameterType="map" resultMap="UserResult">
+        SELECT id,name,account,dept,gender,email FROM USER limit #{pstart},#{psize}
+    </select>
+    <select id="showUsersSize" resultType="int">
+        SELECT COUNT(id) AS size FROM USER
+    </select>
+    <select id="findUsersByName" parameterType="String" resultMap="UserResult">
+        SELECT * FROM USER WHERE name=#{name}
+    </select>
+</mapper>
